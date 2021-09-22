@@ -1,6 +1,6 @@
 name: zju-ncov-hitcarder-action
 description: ZJU-nCov-HitCarder Action.
-author: Long0x0
+author: Codingpoeta
 
 branding:
   icon: mail
@@ -25,6 +25,17 @@ inputs:
     description: pushplus_token.
     required: false
     default: ''
+  mail_info:
+    description: |
+      {
+        "mail_host": "xxxx.xxx.com",
+        "mail_user": "uname",
+        "mail_pass": "passwd",
+        "sender": "sender-mailbox",
+        "receivers": ["aaa@qq.com", abc@163.com]
+      }
+    required: false
+    default: ''
 
 runs:
   using: "composite"
@@ -36,6 +47,7 @@ runs:
         DINGTALK_TOKEN: ${{ inputs.dingtalk_token }}
         SERVERCHAN_KEY: ${{ inputs.serverchan_key }}
         PUSHPLUS_TOKEN: ${{ inputs.pushplus_token }}
+        MAIL_INFO: ${{ inputs.mail_info}}
       run: |
         cd ${{ github.action_path }}
         pip install -r ./requirements.txt

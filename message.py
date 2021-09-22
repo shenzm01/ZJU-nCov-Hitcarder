@@ -2,6 +2,8 @@ import requests
 import json
 import os
 import time
+import smtplib
+from email.mime.text import MIMEText
 
 
 def dingtalk(msg, dingtalk_token, tries=5):
@@ -47,6 +49,28 @@ def serverchan(text, desp, serverchan_key, tries=5):
         time.sleep(5)
     return False
 
+def sendmail(title, content, mail_host, mail_user, mail_pass, sender, receivers):
+    #邮件内容设置
+    message = MIMEText(content ,'plain','utf-8')
+    #邮件主题       
+    message['Subject'] = title 
+    #发送方信息
+    message['From'] = sender 
+    #接受方信息     
+    message['To'] = receivers[0]  
+    #登录并发送邮件
+    try:
+        smtpObj = smtplib.SMTP() 
+        #连接到服务器
+        smtpObj.connect(mail_host,25)
+        #登录到服务器
+        smtpObj.login(mail_user, mail_pass) 
+        #发送
+        smtpObj.sendmail(sender, receivers, message.as_string()) 
+        #退出
+        smtpObj.quit() 
+    except smtplib.SMTPException as e:
+        print('error',e) #打印错误
 
 if __name__ == "__main__":
     msg = "打卡"*1000

@@ -87,7 +87,7 @@ class HitCarder(object):
         except IndexError as _:
             raise RegexMatchError('Relative info not found in html with regex')
 
-        with open("form.txt", "r", encoding="utf-8") as f:
+        with open("data/form.txt", "r", encoding="utf-8") as f:
             if new_form == f.read():
                 return True
         return False
@@ -227,6 +227,15 @@ if __name__ == "__main__":
         time.sleep(5)
         ret, msg = main(username, password)
         print(ret, msg)
+
+    mail_info = os.environ.get('MAIL_INFO')
+    if mail_info and ret != 0:
+        mail_info = json.loads(mail_info)
+        try:
+            ret = message.sendmail("每日打卡", msg, mail_info["mail_host"], mail_info["mail_user"], mail_info["mail_pass"], mail_info["sender"], mail_info["receivers"])
+            print('send_mail_message', ret)
+        except:
+            print('send_mail_message failed')
 
     dingtalk_token = os.environ.get('DINGTALK_TOKEN')
     if dingtalk_token:
