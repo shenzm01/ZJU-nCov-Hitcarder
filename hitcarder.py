@@ -195,7 +195,10 @@ def main(username, password):
     try:
         ret = hit_carder.check_form()
         if not ret:
-            return 2, '打卡信息已改变，请手动打卡'
+            res = self.sess.get(self.base_url)
+            html = res.content.decode()
+            new_form = re.findall(r'<ul>[\s\S]*?</ul>', html)[0]
+            return 2, '打卡信息已改变，请手动打卡', new_form
     except Exception as err:
         return 1, '获取信息失败，请手动打卡: ' + str(err)
 
