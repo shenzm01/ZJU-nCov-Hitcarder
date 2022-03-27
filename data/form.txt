@@ -84,7 +84,7 @@
                             </div>
                         </li>
                         <li>
-                            <div name="sfcyglq" class="radio"><span @click="titlebtn()">今日是否居家隔离观察（居家非隔离状态填否）? Have you been in self-isolation at home today (select No if you are just stay at home but not isolated)?<i class="icon iconfont icon-shuoming"></i><em>（点���查看居家隔离观察定义 click to read the definition of it）</em></span>
+                            <div name="sfcyglq" class="radio"><span @click="titlebtn()">今日是否居家隔离观察（居家非隔离状态填否）? Have you been in self-isolation at home today (select No if you are just stay at home but not isolated)?<i class="icon iconfont icon-shuoming"></i><em>（点击查看居家隔离观察定义 click to read the definition of it）</em></span>
                                 <div>
                                     <div @click="info.sfcyglq=1"><span :class="{active: info.sfcyglq==1}"><i></i></span> <span>是 Yes</span></div>
                                     <div @click="info.sfcyglq=0"><span :class="{active: info.sfcyglq==0}"><i></i></span> <span>否 No</span></div>
@@ -144,7 +144,7 @@
                                         <div @click="info.sqhzjkkys=2"><span :class="{active: info.sqhzjkkys==2}"><i></i></span> <span>红码 Red code</span></div>
                                         <div @click="info.sqhzjkkys=3"><span :class="{active: info.sqhzjkkys==3}"><i></i></span> <span>黄码 Yellow code</span></div>
                                         <div @click="info.sqhzjkkys=4"><span :class="{active: info.sqhzjkkys==4}"><i></i></span> <span>橙码 Orange code</span></div>
-                                        
+
                                     </div>
                                 </div>
                             </li>
