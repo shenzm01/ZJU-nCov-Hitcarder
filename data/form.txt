@@ -84,7 +84,7 @@
                             </div>
                         </li>
                         <li>
-                            <div name="sfcyglq" class="radio"><span @click="titlebtn()">今日是否居家隔离观察（居家非隔离状态填否）? Have you been in self-isolation at home today (select No if you are just stay at home but not isolated)?<i class="icon iconfont icon-shuoming"></i><em>（点击查看居家隔离观察定义 click to read the definition of it）</em></span>
+                            <div name="sfcyglq" class="radio"><span @click="titlebtn()">今日是否居家隔离观察（居家非隔离状态填否）? Have you been in self-isolation at home today (select No if you are just stay at home but not isolated)?<i class="icon iconfont icon-shuoming"></i><em>（点���查看居家隔离观察定义 click to read the definition of it）</em></span>
                                 <div>
                                     <div @click="info.sfcyglq=1"><span :class="{active: info.sfcyglq==1}"><i></i></span> <span>是 Yes</span></div>
                                     <div @click="info.sfcyglq=0"><span :class="{active: info.sfcyglq==0}"><i></i></span> <span>否 No</span></div>
