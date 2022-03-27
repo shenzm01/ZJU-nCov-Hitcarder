@@ -9,7 +9,7 @@ import datetime
 import os
 import sys
 import message
-
+from difflib import Differ
 
 class HitCarder(object):
     """Hit carder class
@@ -90,8 +90,16 @@ class HitCarder(object):
 
         with open("data/form.txt", "r", encoding="utf-8") as f:
             print(f.read())
-            if new_form in f.read():
+            count = 0
+            d = Differ()
+            diff = d.compare(new_form.splitlines(), f.read().splitlines())
+            for line in list(diff):
+                if line[0] == "+":
+                    count = count + 1
+            if count < 3:
                 return True
+#             if new_form in f.read():
+#                 return True
         return False
 
     def get_info(self, html=None):
