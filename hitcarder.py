@@ -90,7 +90,7 @@ class HitCarder(object):
 
         with open("data/form.txt", "r", encoding="utf-8") as f:
             print(f.read())
-            if new_form == f.read():
+            if new_form in f.read():
                 return True
         return False
 
@@ -197,8 +197,8 @@ def main(username, password):
     try:
         ret = hit_carder.check_form()
         if not ret:
-            msg = '打卡信息已改变，请手动打卡'
-#             return 2, '打卡信息已改变，请手动打卡'
+#             msg = '打卡信息已改变，请手动打卡'
+            return 2, '打卡信息已改变，请手动打卡'
     except Exception as err:
         return 1, '获取信息失败，请手动打卡: ' + str(err)
 
