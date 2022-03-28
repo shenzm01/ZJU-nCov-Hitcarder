@@ -4,10 +4,13 @@ import os
 import time
 import smtplib
 from email.mime.text import MIMEText
+import datetime
 
 
 def dingtalk(msg, dingtalk_token, tries=5):
     dingtalk_url = 'https://oapi.dingtalk.com/robot/send?access_token='+dingtalk_token
+    now = datetime.datetime.now()
+    msg = str(now.year) + "." + str(now.month) + "." + str(now.day) + ": " + msg
     data = {
         "msgtype": "text",
         "text": {
