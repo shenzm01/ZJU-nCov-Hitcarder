@@ -10,6 +10,7 @@ import os
 import sys
 import message
 from difflib import Differ
+import ddddocr
 
 class HitCarder(object):
     """Hit carder class
@@ -151,8 +152,11 @@ class HitCarder(object):
         new_info['gwszdd'] = ""
         new_info['jcqzrq'] = ""
         new_info['ismoved'] = 0
-        
-        verify_code = 'USFR'
+        ocr = ddddocr.DdddOcr()
+
+        resp = self.sess.get('https://healthreport.zju.edu.cn/ncov/wap/default/code')
+        verify_code = ocr.classification(resp.content)
+        # verify_code = 'NCCC'
         new_info['verifyCode'] = verify_code
         print(verify_code)
         new_info.update(magic_code_group)
@@ -214,23 +218,29 @@ def main(username, password):
     except Exception as err:
         return 1, '获取信息失败，请手动打卡: ' + str(err)
 
-    try:
-        hit_carder.get_info()
-    except Exception as err:
-        return 1, '获取信息失败，请手动打卡: ' + str(err)
+    verify_num = 5
+    while verify_num > 0:
+        try:
+            hit_carder.get_info()
+        except Exception as err:
+            return 1, '获取信息失败，请手动打卡' + str(err)
 
-    try:
-        res = hit_carder.post()
-        print(res)
-        if str(res['e']) == '0':
-            return 0, '打卡成功'
-        elif str(res['m']) == '今天已经填报了':
-            return 0, '今天已经打卡'
-        else:
-            return 1, '打卡失败'
-    except:
-        return 1, '打卡数据提交失败'
-
+        try:
+            res = hit_carder.post()
+            print(res)
+            if str(res['e']) == '0':
+                return 0, '打卡成功'
+            elif str(res['m']) == '今天已经填报了':
+                return 0, '今天已经打卡'
+            elif str(res['m']) == '验证码错误':
+                verify_num = verify_num - 1
+                print('尝试' + str(5 - verify_num) + ',验证码错误')
+                continue
+            else:
+                return 1, '打卡失败'
+        except:
+            return 1, '打卡数据提交失败'
+    return 1, '打卡验证码错误，请手动打卡'
 
 if __name__ == "__main__":
     username = os.environ['USERNAME']
@@ -243,26 +253,26 @@ if __name__ == "__main__":
         ret, msg = main(username, password)
         print(ret, msg)
 
-    mail_info = os.environ.get('MAIL_INFO')
-    if mail_info and ret != 0:
-        mail_info = json.loads(mail_info)
-        try:
-            ret = message.sendmail("每日打卡", msg, mail_info["mail_host"], mail_info["mail_user"], mail_info["mail_pass"], mail_info["sender"], mail_info["receivers"])
-            print('send_mail_message', ret)
-        except:
-            print('send_mail_message failed')
+    # mail_info = os.environ.get('MAIL_INFO')
+    # if mail_info and ret != 0:
+    #     mail_info = json.loads(mail_info)
+    #     try:
+    #         ret = message.sendmail("每日打卡", msg, mail_info["mail_host"], mail_info["mail_user"], mail_info["mail_pass"], mail_info["sender"], mail_info["receivers"])
+    #         print('send_mail_message', ret)
+    #     except:
+    #         print('send_mail_message failed')
 
     dingtalk_token = os.environ.get('DINGTALK_TOKEN')
     if dingtalk_token:
         ret = message.dingtalk(msg, dingtalk_token)
         print('send_dingtalk_message', ret)
 
-    serverchan_key = os.environ.get('SERVERCHAN_KEY')
-    if serverchan_key:
-        ret = message.serverchan(msg, '', serverchan_key)
-        print('send_serverChan_message', ret)
-
-    pushplus_token = os.environ.get('PUSHPLUS_TOKEN')
-    if pushplus_token:
-        print('pushplus服务已下线，建议使用钉钉')
-        exit(-1)
+    # serverchan_key = os.environ.get('SERVERCHAN_KEY')
+    # if serverchan_key:
+    #     ret = message.serverchan(msg, '', serverchan_key)
+    #     print('send_serverChan_message', ret)
+    #
+    # pushplus_token = os.environ.get('PUSHPLUS_TOKEN')
+    # if pushplus_token:
+    #     print('pushplus服务已下线，建议使用钉钉')
+    #     exit(-1)
