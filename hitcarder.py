@@ -10,6 +10,7 @@ import os
 import sys
 import message
 from difflib import Differ
+import ddddocr
 
 class HitCarder(object):
     """Hit carder class
@@ -151,6 +152,10 @@ class HitCarder(object):
         new_info['gwszdd'] = ""
         new_info['jcqzrq'] = ""
         new_info['ismoved'] = 0
+        ocr = ddddocr.DdddOcr()
+        verify_code = ocr.classification(self.sess.get('https://healthreport.zju.edu.cn/ncov/wap/default/index'))
+        new_info['verifyCode'] = verify_code
+        print(verify_code)
         new_info.update(magic_code_group)
 
         self.info = new_info
