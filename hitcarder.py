@@ -147,6 +147,7 @@ class HitCarder(object):
         new_info['sfsqhzjkk'] = 1
         new_info['sqhzjkkys'] = 1
         new_info['sfqrxxss'] = 1
+        new_info['internship'] = 2
         new_info['szgjcs'] = ""
         new_info['zgfx14rfhsj'] = ""
         new_info['gwszdd'] = ""
