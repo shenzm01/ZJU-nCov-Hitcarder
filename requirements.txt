@@ -1,2 +1,1 @@
 requests[security]
-ddddocr==1.1.0
